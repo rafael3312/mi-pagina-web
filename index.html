@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Sensual - Productos Premium</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Verificación de Edad -->
+    <div class="age-verification" id="ageVerification">
+        <div class="age-modal">
+            <div class="logo-space">
+                <img src="logo.png" alt="Siente+ Logo" class="logo-img">
+            </div>
+            <h2>🔞 Verificación de Edad</h2>
+            <p>Este sitio contiene contenido para adultos. Debes ser mayor de 18 años para continuar.</p>
+            <p>¿Eres mayor de edad?</p>
+            <div class="age-buttons">
+                <button class="btn btn-age-confirm" onclick="confirmAge(true)">Sí, soy mayor de 18</button>
+                <button class="btn btn-age-deny" onclick="confirmAge(false)">No, soy menor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cabecera -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="logo.png" alt="Siente+ Logo" class="logo-img-small">
+                <span>Siente+</span>
+                <small>Placer consciente</small>
+            </a>
+            <div class="nav-buttons">
+                <button class="btn btn-catalog" onclick="showCatalog()">Catálogo</button>
+                <button class="btn btn-admin" onclick="showLoginModal()">Admin</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Botón para mostrar filtros -->
+    <div class="filter-toggle-container" id="filterToggleContainer">
+        <button class="filter-toggle-btn" id="filterToggleBtn">
+            <i class="fas fa-sliders-h"></i> Filtros
+        </button>
+    </div>
+
+    <!-- Filtros desplegables -->
+    <div class="filters-container" id="filtersContainer">
+        <div class="filters-content">
+            <div class="filter-group">
+                <select id="categoryFilter">
+                    <option value="">Todas las categorías</option>
+                    <option value="juguetes">Juguetes Íntimos</option>
+                    <option value="cosmetica">Cosmética Sensual</option>
+                    <option value="lenceria">Lencería</option>
+                    <option value="aceites">Aceites y Lubricantes</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Buscar productos...">
+                <select id="priceFilter">
+                    <option value="">Todos los precios</option>
+                    <option value="0-50">$0 - $50</option>
+                    <option value="50-100">$50 - $100</option>
+                    <option value="100-200">$100 - $200</option>
+                    <option value="200+">$200+</option>
+                </select>
+            </div>
+            <div class="product-counter">
+                <span id="productCount">0</span> productos encontrados
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <!-- Vista de Catálogo -->
+        <div id="catalogView">
+            <div class="products-grid" id="productsGrid">
+                <!-- Los productos se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Panel de Administración -->
+        <div class="admin-panel" id="adminPanel">
+            <h2>Panel de Administración</h2>
+            
+            <div class="admin-container">
+                <!-- Formulario para agregar/editar productos -->
+                <div class="admin-form-section">
+                    <h3><i class="fas fa-edit"></i> Gestión de Productos</h3>
+                    <form id="productForm">
+                        <input type="hidden" id="productId">
+                        <div class="form-group">
+                            <label>Nombre del Producto:</label>
+                            <input type="text" id="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio:</label>
+                            <input type="number" id="productPrice" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Categoría:</label>
+                            <select id="productCategory" required>
+                                <option value="">Seleccionar categoría</option>
+                                <option value="juguetes">Juguetes Íntimos</option>
+                                <option value="cosmetica">Cosmética Sensual</option>
+                                <option value="lenceria">Lencería</option>
+                                <option value="aceites">Aceites y Lubricantes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Imágenes del Producto (URLs separadas por comas):</label>
+                            <textarea id="productImages" placeholder="Ingrese URLs de imágenes separadas por comas"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Características:</label>
+                            <textarea id="productFeatures" placeholder="Describe las características del producto..."></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Guardar</button>
+                            <button type="button" class="btn btn-cancel" onclick="cancelEdit()"><i class="fas fa-times"></i> Cancelar</button>
+                        </div>
+                    </form>
+                    <p id="adminMessage"></p>
+                </div>
+                
+                <!-- Lista de productos para administrar -->
+                <div class="admin-table-section">
+                    <div class="admin-table-header">
+                        <h3><i class="fas fa-list"></i> Lista de Productos</h3>
+                        <div class="admin-search">
+                            <input type="text" id="adminSearch" placeholder="Buscar producto...">
+                            <span id="adminProductCount">0 productos</span>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                    <th>Categoría</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminProductsTable">
+                                <!-- Los productos se cargarán aquí dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="btn btn-catalog" onclick="showCatalog()"><i class="fas fa-store"></i> Volver al Catálogo</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Acceso Administrativo</h2>
+            <div class="form-group">
+                <label for="adminPassword">Contraseña:</label>
+                <input type="password" id="adminPassword" placeholder="Ingrese la contraseña" required>
+            </div>
+            <button class="btn btn-admin" onclick="login()" style="width: 100%;">Ingresar</button>
+            <p class="error-msg" id="loginError"></p>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close" onclick="closeConfirmModal()">&times;</span>
+            <h2>Confirmar Eliminación</h2>
+            <p id="confirmMessage">¿Estás seguro que deseas eliminar este producto?</p>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeConfirmModal()">Cancelar</button>
+                <button class="btn btn-delete" onclick="deleteProduct()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="logo.png" alt="Siente+ Logo" class="logo-img-footer">
+                <div>
+                    <h3>Siente+</h3>
+                    <p>Placer consciente</p>
+                </div>
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>&copy; 2023 Siente+. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>
